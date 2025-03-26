@@ -1,0 +1,36 @@
+buildscript {
+    ext {
+        kotlin_version = '1.9.0'
+        hilt_version = '2.48'
+        java_version = JavaVersion.VERSION_17
+    }
+    
+    repositories {
+        google()
+        mavenCentral()
+    }
+    
+    dependencies {
+        classpath 'com.android.tools.build:gradle:8.3.0'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath "com.google.dagger:hilt-android-gradle-plugin:$hilt_version"
+    }
+}
+
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+plugins {
+    id 'com.google.devtools.ksp' version '1.9.0-1.0.13' apply false
+}
+
+// Set Java version for all projects
+allprojects {
+    tasks.withType(JavaCompile).configureEach {
+        sourceCompatibility = java_version
+        targetCompatibility = java_version
+    }
+    tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
+        kotlinOptions {
+            jvmTarget = java_version.toString()
+        }
+    }
+} 
