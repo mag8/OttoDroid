@@ -1,14 +1,13 @@
-package com.otto.data.local
+package com.example.ottov1.data.local
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import com.otto.data.model.ClimbingActivity
 
 @Database(
-    entities = [ClimbingActivity::class],
+    entities = [ActivityEntity::class],
     version = 1,
     exportSchema = false
 )
-abstract class ActivityDatabase : RoomDatabase() {
+abstract class AppDatabase : RoomDatabase() {
     abstract fun activityDao(): ActivityDao
 } 

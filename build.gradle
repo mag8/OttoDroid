@@ -1,7 +1,7 @@
 buildscript {
     ext {
         kotlin_version = '1.9.0'
-        hilt_version = '2.48'
+        hilt_version = '2.50'
         java_version = JavaVersion.VERSION_17
     }
     

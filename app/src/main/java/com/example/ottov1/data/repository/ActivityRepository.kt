@@ -1,6 +1,6 @@
-package com.otto.data.repository
+package com.example.ottov1.data.repository
 
-import com.otto.data.model.ClimbingActivity
+import com.example.ottov1.data.model.ClimbingActivity
 import kotlinx.coroutines.flow.Flow
 
 interface ActivityRepository {
@@ -8,6 +8,5 @@ interface ActivityRepository {
     suspend fun getActivityById(id: Long): ClimbingActivity?
     suspend fun insertActivity(activity: ClimbingActivity): Long
     suspend fun updateActivity(activity: ClimbingActivity)
-    suspend fun deleteActivity(activity: ClimbingActivity)
-    suspend fun syncActivities()
+    suspend fun deleteActivity(id: Long)
 } 

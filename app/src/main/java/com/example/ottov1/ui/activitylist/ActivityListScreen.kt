@@ -1,4 +1,4 @@
-package com.otto.ui.activitylist
+package com.example.ottov1.ui.activitylist
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -26,8 +26,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.otto.R
-import com.otto.data.model.ClimbingActivity
+import com.example.ottov1.R
+import com.example.ottov1.data.model.ClimbingActivity
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -39,8 +39,6 @@ fun ActivityListScreen(
     viewModel: ActivityListViewModel = hiltViewModel()
 ) {
     var searchQuery by remember { mutableStateOf("") }
-    var selectedTab by remember { mutableStateOf(0) }
-
     val activities by viewModel.activities.collectAsState(initial = emptyList())
 
     Scaffold(
@@ -97,66 +95,6 @@ fun ActivityListScreen(
                         focusedBorderColor = Color(0xFF1B3252)
                     ),
                     singleLine = true
-                )
-            }
-        },
-        bottomBar = {
-            NavigationBar(
-                containerColor = MaterialTheme.colorScheme.surface,
-                tonalElevation = 0.dp
-            ) {
-                NavigationBarItem(
-                    icon = { Icon(Icons.Outlined.Home, "Home") },
-                    selected = selectedTab == 0,
-                    onClick = { selectedTab = 0 },
-                    colors = NavigationBarItemDefaults.colors(
-                        selectedIconColor = Color(0xFF1B3252),
-                        unselectedIconColor = Color(0xFF9AA0A6)
-                    )
-                )
-                NavigationBarItem(
-                    icon = { Icon(painterResource(id = R.drawable.ic_landscape_24), "Activities") },
-                    selected = selectedTab == 1,
-                    onClick = { selectedTab = 1 },
-                    colors = NavigationBarItemDefaults.colors(
-                        selectedIconColor = Color(0xFF1B3252),
-                        unselectedIconColor = Color(0xFF9AA0A6)
-                    )
-                )
-                NavigationBarItem(
-                    icon = { 
-                        FloatingActionButton(
-                            onClick = { onNavigateToActivity(-1L) },
-                            containerColor = Color(0xFF1B3252),
-                            modifier = Modifier.size(48.dp)
-                        ) {
-                            Icon(
-                                Icons.Default.Add,
-                                contentDescription = "Add",
-                                tint = Color.White
-                            )
-                        }
-                    },
-                    selected = false,
-                    onClick = { onNavigateToActivity(-1L) }
-                )
-                NavigationBarItem(
-                    icon = { Icon(Icons.Outlined.Notifications, "Notifications") },
-                    selected = selectedTab == 3,
-                    onClick = { selectedTab = 3 },
-                    colors = NavigationBarItemDefaults.colors(
-                        selectedIconColor = Color(0xFF1B3252),
-                        unselectedIconColor = Color(0xFF9AA0A6)
-                    )
-                )
-                NavigationBarItem(
-                    icon = { Icon(Icons.Outlined.Person, "Profile") },
-                    selected = selectedTab == 4,
-                    onClick = { selectedTab = 4 },
-                    colors = NavigationBarItemDefaults.colors(
-                        selectedIconColor = Color(0xFF1B3252),
-                        unselectedIconColor = Color(0xFF9AA0A6)
-                    )
                 )
             }
         }

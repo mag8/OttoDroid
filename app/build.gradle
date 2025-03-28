@@ -3,6 +3,7 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id 'com.google.devtools.ksp'
     id 'dagger.hilt.android.plugin'
+    id 'kotlin-kapt'
 }
 
 // Add this block to read local.properties
@@ -22,14 +23,17 @@ configurations.all {
 }
 
 android {
-    namespace 'com.otto'
+    namespace 'com.example.ottov1'
     compileSdk 34
 
     defaultConfig {
-        minSdk 24
+        applicationId "com.example.ottov1"
+        minSdk 27
         targetSdk 34
         versionCode 1
         versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         // Add the Maps API key configuration
         manifestPlaceholders = [
@@ -65,6 +69,7 @@ android {
 dependencies {
     def compose_version = "1.5.4"
     def nav_version = "2.7.7"
+    def hilt_version = "2.50"
     
     // Compose
     implementation platform('androidx.compose:compose-bom:2023.10.01')
@@ -91,7 +96,7 @@ dependencies {
 
     // Hilt
     implementation "com.google.dagger:hilt-android:$hilt_version"
-    ksp "com.google.dagger:hilt-android-compiler:$hilt_version"
+    ksp "com.google.dagger:hilt-compiler:$hilt_version"
     implementation "androidx.hilt:hilt-navigation-compose:1.1.0"
 
     // Room
@@ -114,4 +119,13 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.7.0"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0"
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.7.0"
+
+    // Testing
+    testImplementation "junit:junit:4.13.2"
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3"
+    testImplementation "androidx.arch.core:core-testing:2.2.0"
+    androidTestImplementation "androidx.test.ext:junit:1.1.5"
+    androidTestImplementation "androidx.test.espresso:espresso-core:3.5.1"
+    androidTestImplementation platform('androidx.compose:compose-bom:2023.10.01')
+    androidTestImplementation 'androidx.compose.ui:ui-test-junit4'
 } 
