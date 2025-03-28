@@ -19,7 +19,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.example.ottov1.R
 import com.example.ottov1.ui.activitylist.ActivityListScreen
-import com.example.ottov1.ui.addedit.AddEditActivityScreen
+import com.example.ottov1.ui.addedit.AddEditActivityDialog
 import com.example.ottov1.ui.map.ActivityMapScreen
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -29,6 +29,8 @@ fun OttoNavigation(
     modifier: Modifier = Modifier
 ) {
     var selectedTab by remember { mutableStateOf(0) }
+    var showAddEditDialog by remember { mutableStateOf(false) }
+    var editActivityId by remember { mutableStateOf(-1L) }
 
     Scaffold(
         modifier = modifier.fillMaxSize(),
@@ -69,9 +71,8 @@ fun OttoNavigation(
                     icon = { 
                         FloatingActionButton(
                             onClick = { 
-                                navController.navigate(Screen.AddEditActivity.createRoute()) {
-                                    launchSingleTop = true
-                                }
+                                editActivityId = -1L
+                                showAddEditDialog = true
                             },
                             containerColor = MaterialTheme.colorScheme.primary,
                             modifier = Modifier.padding(vertical = 8.dp)
@@ -85,9 +86,8 @@ fun OttoNavigation(
                     },
                     selected = false,
                     onClick = { 
-                        navController.navigate(Screen.AddEditActivity.createRoute()) {
-                            launchSingleTop = true
-                        }
+                        editActivityId = -1L
+                        showAddEditDialog = true
                     }
                 )
                 NavigationBarItem(
@@ -125,9 +125,8 @@ fun OttoNavigation(
                         }
                     },
                     onNavigateToActivity = { activityId ->
-                        navController.navigate(Screen.AddEditActivity.createRoute(activityId)) {
-                            launchSingleTop = true
-                        }
+                        editActivityId = activityId
+                        showAddEditDialog = true
                     }
                 )
             }
@@ -138,30 +137,21 @@ fun OttoNavigation(
                         navController.popBackStack()
                     },
                     onActivityClick = { activityId ->
-                        navController.navigate(Screen.AddEditActivity.createRoute(activityId)) {
-                            launchSingleTop = true
-                        }
+                        editActivityId = activityId
+                        showAddEditDialog = true
                     }
                 )
             }
+        }
 
-            composable(
-                route = Screen.AddEditActivity.route,
-                arguments = listOf(
-                    navArgument("activityId") {
-                        type = NavType.LongType
-                        defaultValue = -1L
-                    }
-                )
-            ) { backStackEntry ->
-                val activityId = backStackEntry.arguments?.getLong("activityId") ?: -1L
-                AddEditActivityScreen(
-                    activityId = activityId,
-                    onNavigateBack = {
-                        navController.popBackStack()
-                    }
-                )
-            }
+        if (showAddEditDialog) {
+            AddEditActivityDialog(
+                activityId = editActivityId,
+                onDismiss = {
+                    showAddEditDialog = false
+                    editActivityId = -1L
+                }
+            )
         }
     }
 } 

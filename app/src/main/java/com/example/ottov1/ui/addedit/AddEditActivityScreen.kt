@@ -22,7 +22,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.ottov1.R
 import java.text.SimpleDateFormat
 import java.util.*
-import com.example.ottov1.ui.components.TimePickerDialog
+import com.example.ottov1.ui.components.MaterialTimePickerDialog
 
 private const val TAG = "AddEditActivityScreen"
 
@@ -431,7 +431,8 @@ fun AddEditActivityScreen(
             }
 
             if (showStartTimePicker) {
-                TimePickerDialog(
+                MaterialTimePickerDialog(
+                    title = "Select Start Time",
                     onDismiss = { showStartTimePicker = false },
                     onConfirm = { hour, minute -> 
                         viewModel.updateStartTime(hour, minute)
@@ -443,7 +444,8 @@ fun AddEditActivityScreen(
             }
 
             if (showEndTimePicker) {
-                TimePickerDialog(
+                MaterialTimePickerDialog(
+                    title = "Select End Time",
                     onDismiss = { showEndTimePicker = false },
                     onConfirm = { hour, minute -> 
                         viewModel.updateEndTime(hour, minute)

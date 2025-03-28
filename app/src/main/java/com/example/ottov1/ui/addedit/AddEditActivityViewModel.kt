@@ -138,4 +138,15 @@ class AddEditActivityViewModel @Inject constructor(
         Log.d(TAG, "Clearing save result")
         _saveResult.value = null
     }
+
+    fun deleteActivity() {
+        viewModelScope.launch {
+            try {
+                repository.deleteActivity(activity.value.id)
+                _saveResult.value = SaveResult.Success
+            } catch (e: Exception) {
+                _saveResult.value = SaveResult.Error(e.message ?: "Failed to delete activity")
+            }
+        }
+    }
 } 
