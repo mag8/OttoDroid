@@ -98,6 +98,11 @@ class AddEditActivityViewModel @Inject constructor(
         _activity.value = _activity.value.copy(type = type)
     }
 
+    fun updateLocation(location: String) {
+        Log.d(TAG, "Updating location to: $location")
+        _activity.value = _activity.value.copy(location = location)
+    }
+
     fun saveActivity(): Boolean {
         val currentActivity = _activity.value
         Log.d(TAG, "Attempting to save activity: $currentActivity")

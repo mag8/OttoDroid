@@ -455,6 +455,52 @@ fun AddEditActivityScreen(
             }
 
             // Location Section
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(12.dp),
+                colors = CardDefaults.cardColors(
+                    containerColor = Color(0xFFF5F5F5)
+                )
+            ) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp),
+                    verticalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(16.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.LocationOn,
+                            contentDescription = "Location",
+                            tint = Color(0xFF1B3252)
+                        )
+                        Text(
+                            text = "Location",
+                            fontSize = 14.sp,
+                            fontWeight = FontWeight.Medium,
+                            color = Color(0xFF1B3252)
+                        )
+                    }
+                    OutlinedTextField(
+                        value = activity.location ?: "",
+                        onValueChange = { viewModel.updateLocation(it) },
+                        modifier = Modifier.fillMaxWidth(),
+                        label = { Text("Enter location") },
+                        singleLine = true,
+                        shape = RoundedCornerShape(8.dp),
+                        colors = OutlinedTextFieldDefaults.colors(
+                            unfocusedBorderColor = Color(0xFFE0E0E0),
+                            focusedBorderColor = Color(0xFF1B3252)
+                        )
+                    )
+                }
+            }
+
+            // Map Location Section (if coordinates are available)
             if (activity.latitude != null && activity.longitude != null) {
                 Card(
                     modifier = Modifier.fillMaxWidth(),
@@ -472,12 +518,12 @@ fun AddEditActivityScreen(
                     ) {
                         Icon(
                             imageVector = Icons.Default.LocationOn,
-                            contentDescription = "Location",
+                            contentDescription = "Map Location",
                             tint = Color(0xFF1B3252)
                         )
                         Column {
                             Text(
-                                text = "Location",
+                                text = "Map Location",
                                 fontSize = 14.sp,
                                 fontWeight = FontWeight.Medium,
                                 color = Color(0xFF1B3252)

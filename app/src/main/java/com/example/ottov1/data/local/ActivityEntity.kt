@@ -18,7 +18,8 @@ data class ActivityEntity(
     val startHour: Int,
     val startMinute: Int,
     val endHour: Int,
-    val endMinute: Int
+    val endMinute: Int,
+    val location: String?
 ) {
     fun toClimbingActivity() = ClimbingActivity(
         id = id,
@@ -31,7 +32,8 @@ data class ActivityEntity(
         startHour = startHour,
         startMinute = startMinute,
         endHour = endHour,
-        endMinute = endMinute
+        endMinute = endMinute,
+        location = location
     )
 
     companion object {
@@ -46,7 +48,8 @@ data class ActivityEntity(
             startHour = activity.startHour,
             startMinute = activity.startMinute,
             endHour = activity.endHour,
-            endMinute = activity.endMinute
+            endMinute = activity.endMinute,
+            location = activity.location
         )
     }
 } 

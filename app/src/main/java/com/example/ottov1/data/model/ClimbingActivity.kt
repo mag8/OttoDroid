@@ -13,5 +13,6 @@ data class ClimbingActivity(
     val startHour: Int = 9,
     val startMinute: Int = 0,
     val endHour: Int = 10,
-    val endMinute: Int = 0
+    val endMinute: Int = 0,
+    val location: String? = null
 ) 
