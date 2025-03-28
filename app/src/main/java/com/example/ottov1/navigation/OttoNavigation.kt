@@ -56,7 +56,9 @@ fun OttoNavigation(
                     selected = selectedTab == 1,
                     onClick = { 
                         selectedTab = 1
-                        navController.navigate(Screen.ActivityMap.route)
+                        navController.navigate(Screen.ActivityMap.route) {
+                            popUpTo(Screen.ActivityList.route)
+                        }
                     },
                     colors = NavigationBarItemDefaults.colors(
                         selectedIconColor = MaterialTheme.colorScheme.primary,
@@ -67,7 +69,7 @@ fun OttoNavigation(
                     icon = { 
                         FloatingActionButton(
                             onClick = { 
-                                navController.navigate(Screen.AddEditActivity.createRoute(-1L)) {
+                                navController.navigate(Screen.AddEditActivity.createRoute()) {
                                     launchSingleTop = true
                                 }
                             },
@@ -83,7 +85,7 @@ fun OttoNavigation(
                     },
                     selected = false,
                     onClick = { 
-                        navController.navigate(Screen.AddEditActivity.createRoute(-1L)) {
+                        navController.navigate(Screen.AddEditActivity.createRoute()) {
                             launchSingleTop = true
                         }
                     }
@@ -118,10 +120,14 @@ fun OttoNavigation(
                 ActivityListScreen(
                     onNavigateToMap = {
                         selectedTab = 1
-                        navController.navigate(Screen.ActivityMap.route)
+                        navController.navigate(Screen.ActivityMap.route) {
+                            popUpTo(Screen.ActivityList.route)
+                        }
                     },
                     onNavigateToActivity = { activityId ->
-                        navController.navigate(Screen.AddEditActivity.createRoute(activityId))
+                        navController.navigate(Screen.AddEditActivity.createRoute(activityId)) {
+                            launchSingleTop = true
+                        }
                     }
                 )
             }
@@ -132,16 +138,19 @@ fun OttoNavigation(
                         navController.popBackStack()
                     },
                     onActivityClick = { activityId ->
-                        navController.navigate(Screen.AddEditActivity.createRoute(activityId))
+                        navController.navigate(Screen.AddEditActivity.createRoute(activityId)) {
+                            launchSingleTop = true
+                        }
                     }
                 )
             }
 
             composable(
-                route = "${Screen.AddEditActivity.route}/{activityId}",
+                route = Screen.AddEditActivity.route,
                 arguments = listOf(
                     navArgument("activityId") {
                         type = NavType.LongType
+                        defaultValue = -1L
                     }
                 )
             ) { backStackEntry ->
