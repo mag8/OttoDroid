@@ -2,6 +2,7 @@ package com.example.ottov1.ui.addedit
 
 import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -21,6 +22,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.ottov1.R
 import java.text.SimpleDateFormat
 import java.util.*
+import com.example.ottov1.ui.components.TimePickerDialog
 
 private const val TAG = "AddEditActivityScreen"
 
@@ -37,6 +39,7 @@ fun AddEditActivityScreen(
     val saveResult by viewModel.saveResult.collectAsState()
     var showErrorDialog by remember { mutableStateOf(false) }
     var errorMessage by remember { mutableStateOf("") }
+    var showDatePicker by remember { mutableStateOf(false) }
     
     LaunchedEffect(activityId) {
         Log.d(TAG, "LaunchedEffect triggered with activityId: $activityId")
@@ -142,24 +145,16 @@ fun AddEditActivityScreen(
             
             // Name Section
             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                Text(
-                    text = "Activity Name",
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight.Medium,
-                    color = Color(0xFF1B3252)
-                )
                 OutlinedTextField(
                     value = activity.name,
                     onValueChange = { viewModel.updateName(it) },
                     modifier = Modifier.fillMaxWidth(),
-                    placeholder = { Text("Enter activity name") },
-                    singleLine = true,
-                    shape = RoundedCornerShape(12.dp),
-                    colors = OutlinedTextFieldDefaults.colors(
-                        unfocusedBorderColor = Color(0xFFE0E0E0),
-                        focusedBorderColor = Color(0xFF1B3252)
-                    ),
+                    label = { Text("Activity Name") },
+                    supportingText = if (activity.name.isBlank() && saveResult != null) {
+                        { Text("Activity name is required") }
+                    } else null,
                     isError = activity.name.isBlank() && saveResult != null,
+                    singleLine = true,
                     leadingIcon = {
                         Icon(
                             painter = painterResource(id = R.drawable.ic_text_snippet),
@@ -168,35 +163,17 @@ fun AddEditActivityScreen(
                         )
                     }
                 )
-                AnimatedVisibility(visible = activity.name.isBlank() && saveResult != null) {
-                    Text(
-                        text = "Activity name is required",
-                        color = MaterialTheme.colorScheme.error,
-                        fontSize = 12.sp
-                    )
-                }
             }
 
             // Description Section
             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                Text(
-                    text = "Description",
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight.Medium,
-                    color = Color(0xFF1B3252)
-                )
                 OutlinedTextField(
                     value = activity.description ?: "",
                     onValueChange = { viewModel.updateDescription(it) },
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(120.dp),
-                    placeholder = { Text("Enter activity description") },
-                    shape = RoundedCornerShape(12.dp),
-                    colors = OutlinedTextFieldDefaults.colors(
-                        unfocusedBorderColor = Color(0xFFE0E0E0),
-                        focusedBorderColor = Color(0xFF1B3252)
-                    ),
+                    label = { Text("Description") },
                     leadingIcon = {
                         Icon(
                             painter = painterResource(id = R.drawable.ic_text_snippet),
@@ -207,9 +184,96 @@ fun AddEditActivityScreen(
                 )
             }
 
+            // Activity Type Section
+            var showTypeDialog by remember { mutableStateOf(false) }
+            
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable { showTypeDialog = true },
+                shape = RoundedCornerShape(12.dp),
+                colors = CardDefaults.cardColors(
+                    containerColor = Color(0xFFF5F5F5)
+                )
+            ) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp),
+                    horizontalArrangement = Arrangement.spacedBy(16.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.List,
+                        contentDescription = "Activity Type",
+                        tint = Color(0xFF1B3252)
+                    )
+                    Column {
+                        Text(
+                            text = "Activity Type",
+                            fontSize = 14.sp,
+                            fontWeight = FontWeight.Medium,
+                            color = Color(0xFF1B3252)
+                        )
+                        Text(
+                            text = activity.type.toString(),
+                            fontSize = 16.sp,
+                            color = Color(0xFF666666)
+                        )
+                    }
+                }
+            }
+
+            if (showTypeDialog) {
+                AlertDialog(
+                    onDismissRequest = { showTypeDialog = false },
+                    title = { Text("Select Activity Type") },
+                    text = {
+                        Column(
+                            modifier = Modifier.fillMaxWidth(),
+                            verticalArrangement = Arrangement.spacedBy(8.dp)
+                        ) {
+                            ActivityType.values().forEach { type ->
+                                Row(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .clickable {
+                                            viewModel.updateActivityType(type)
+                                            showTypeDialog = false
+                                        }
+                                        .padding(vertical = 12.dp),
+                                    horizontalArrangement = Arrangement.spacedBy(16.dp),
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    RadioButton(
+                                        selected = activity.type == type,
+                                        onClick = {
+                                            viewModel.updateActivityType(type)
+                                            showTypeDialog = false
+                                        }
+                                    )
+                                    Text(
+                                        text = type.toString(),
+                                        fontSize = 16.sp,
+                                        color = Color(0xFF1B3252)
+                                    )
+                                }
+                            }
+                        }
+                    },
+                    confirmButton = {
+                        TextButton(onClick = { showTypeDialog = false }) {
+                            Text("Cancel")
+                        }
+                    }
+                )
+            }
+
             // Date Section
             Card(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable { showDatePicker = true },
                 shape = RoundedCornerShape(12.dp),
                 colors = CardDefaults.cardColors(
                     containerColor = Color(0xFFF5F5F5)
@@ -241,6 +305,153 @@ fun AddEditActivityScreen(
                         )
                     }
                 }
+            }
+
+            if (showDatePicker) {
+                val datePickerState = rememberDatePickerState(
+                    initialSelectedDateMillis = activity.date
+                )
+                DatePickerDialog(
+                    onDismissRequest = { showDatePicker = false },
+                    confirmButton = {
+                        TextButton(onClick = {
+                            datePickerState.selectedDateMillis?.let { timestamp ->
+                                viewModel.updateDate(timestamp)
+                            }
+                            showDatePicker = false
+                        }) {
+                            Text("OK")
+                        }
+                    },
+                    dismissButton = {
+                        TextButton(onClick = { showDatePicker = false }) {
+                            Text("Cancel")
+                        }
+                    }
+                ) {
+                    DatePicker(
+                        state = datePickerState,
+                        showModeToggle = false
+                    )
+                }
+            }
+
+            // Time Section
+            var showStartTimePicker by remember { mutableStateOf(false) }
+            var showEndTimePicker by remember { mutableStateOf(false) }
+
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(12.dp),
+                colors = CardDefaults.cardColors(
+                    containerColor = Color(0xFFF5F5F5)
+                )
+            ) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp),
+                    verticalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
+                    Text(
+                        text = "Time",
+                        fontSize = 14.sp,
+                        fontWeight = FontWeight.Medium,
+                        color = Color(0xFF1B3252)
+                    )
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Card(
+                            modifier = Modifier
+                                .weight(1f)
+                                .clickable { showStartTimePicker = true },
+                            shape = RoundedCornerShape(8.dp),
+                            colors = CardDefaults.cardColors(
+                                containerColor = Color.White
+                            )
+                        ) {
+                            Column(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(12.dp)
+                            ) {
+                                Text(
+                                    text = "Start Time",
+                                    fontSize = 12.sp,
+                                    color = Color(0xFF666666)
+                                )
+                                Text(
+                                    text = String.format(
+                                        "%02d:%02d",
+                                        activity.startHour,
+                                        activity.startMinute
+                                    ),
+                                    fontSize = 16.sp,
+                                    color = Color(0xFF1B3252),
+                                    fontWeight = FontWeight.Medium
+                                )
+                            }
+                        }
+                        Spacer(modifier = Modifier.width(16.dp))
+                        Card(
+                            modifier = Modifier
+                                .weight(1f)
+                                .clickable { showEndTimePicker = true },
+                            shape = RoundedCornerShape(8.dp),
+                            colors = CardDefaults.cardColors(
+                                containerColor = Color.White
+                            )
+                        ) {
+                            Column(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(12.dp)
+                            ) {
+                                Text(
+                                    text = "End Time",
+                                    fontSize = 12.sp,
+                                    color = Color(0xFF666666)
+                                )
+                                Text(
+                                    text = String.format(
+                                        "%02d:%02d",
+                                        activity.endHour,
+                                        activity.endMinute
+                                    ),
+                                    fontSize = 16.sp,
+                                    color = Color(0xFF1B3252),
+                                    fontWeight = FontWeight.Medium
+                                )
+                            }
+                        }
+                    }
+                }
+            }
+
+            if (showStartTimePicker) {
+                TimePickerDialog(
+                    onDismiss = { showStartTimePicker = false },
+                    onConfirm = { hour, minute -> 
+                        viewModel.updateStartTime(hour, minute)
+                        showStartTimePicker = false
+                    },
+                    initialHour = activity.startHour,
+                    initialMinute = activity.startMinute
+                )
+            }
+
+            if (showEndTimePicker) {
+                TimePickerDialog(
+                    onDismiss = { showEndTimePicker = false },
+                    onConfirm = { hour, minute -> 
+                        viewModel.updateEndTime(hour, minute)
+                        showEndTimePicker = false
+                    },
+                    initialHour = activity.endHour,
+                    initialMinute = activity.endMinute
+                )
             }
 
             // Location Section

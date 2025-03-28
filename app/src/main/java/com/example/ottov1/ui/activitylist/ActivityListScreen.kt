@@ -62,14 +62,14 @@ fun ActivityListScreen(
                     Row {
                         IconButton(onClick = onNavigateToMap) {
                             Icon(
-                                imageVector = Icons.Filled.LocationOn,
+                                painter = painterResource(id = R.drawable.ic_map_24),
                                 contentDescription = "Map View",
                                 tint = Color(0xFF1B3252)
                             )
                         }
                         IconButton(onClick = { /* TODO: Filter */ }) {
                             Icon(
-                                imageVector = Icons.Filled.Menu,
+                                painter = painterResource(id = R.drawable.ic_filter_alt_24),
                                 contentDescription = "Filter",
                                 tint = Color(0xFF1B3252)
                             )

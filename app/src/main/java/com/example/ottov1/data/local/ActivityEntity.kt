@@ -3,6 +3,7 @@ package com.example.ottov1.data.local
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.example.ottov1.data.model.ClimbingActivity
+import com.example.ottov1.ui.addedit.ActivityType
 
 @Entity(tableName = "activities")
 data class ActivityEntity(
@@ -12,7 +13,12 @@ data class ActivityEntity(
     val description: String?,
     val date: Long,
     val latitude: Double?,
-    val longitude: Double?
+    val longitude: Double?,
+    val type: String,
+    val startHour: Int,
+    val startMinute: Int,
+    val endHour: Int,
+    val endMinute: Int
 ) {
     fun toClimbingActivity() = ClimbingActivity(
         id = id,
@@ -20,7 +26,12 @@ data class ActivityEntity(
         description = description,
         date = date,
         latitude = latitude,
-        longitude = longitude
+        longitude = longitude,
+        type = ActivityType.valueOf(type),
+        startHour = startHour,
+        startMinute = startMinute,
+        endHour = endHour,
+        endMinute = endMinute
     )
 
     companion object {
@@ -30,7 +41,12 @@ data class ActivityEntity(
             description = activity.description,
             date = activity.date,
             latitude = activity.latitude,
-            longitude = activity.longitude
+            longitude = activity.longitude,
+            type = activity.type.name,
+            startHour = activity.startHour,
+            startMinute = activity.startMinute,
+            endHour = activity.endHour,
+            endMinute = activity.endMinute
         )
     }
 } 

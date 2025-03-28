@@ -13,6 +13,24 @@ import javax.inject.Inject
 
 private const val TAG = "AddEditActivityVM"
 
+enum class ActivityType {
+    SPORT,
+    TRAD,
+    BOULDER,
+    MULTI_PITCH,
+    CLIMBING_GYM;
+
+    override fun toString(): String {
+        return when (this) {
+            SPORT -> "Sport"
+            TRAD -> "Trad"
+            BOULDER -> "Boulder"
+            MULTI_PITCH -> "Multi-Pitch"
+            CLIMBING_GYM -> "Climbing Gym"
+        }
+    }
+}
+
 sealed class SaveResult {
     object Success : SaveResult()
     data class Error(val message: String) : SaveResult()
@@ -58,6 +76,26 @@ class AddEditActivityViewModel @Inject constructor(
     fun updateDescription(description: String) {
         Log.d(TAG, "Updating description to: $description")
         _activity.value = _activity.value.copy(description = description)
+    }
+
+    fun updateDate(timestamp: Long) {
+        Log.d(TAG, "Updating date to: $timestamp")
+        _activity.value = _activity.value.copy(date = timestamp)
+    }
+
+    fun updateStartTime(hour: Int, minute: Int) {
+        Log.d(TAG, "Updating start time to: $hour:$minute")
+        _activity.value = _activity.value.copy(startHour = hour, startMinute = minute)
+    }
+
+    fun updateEndTime(hour: Int, minute: Int) {
+        Log.d(TAG, "Updating end time to: $hour:$minute")
+        _activity.value = _activity.value.copy(endHour = hour, endMinute = minute)
+    }
+
+    fun updateActivityType(type: ActivityType) {
+        Log.d(TAG, "Updating activity type to: $type")
+        _activity.value = _activity.value.copy(type = type)
     }
 
     fun saveActivity(): Boolean {
