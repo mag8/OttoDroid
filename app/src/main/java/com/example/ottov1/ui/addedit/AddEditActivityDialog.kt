@@ -26,7 +26,7 @@ import com.example.ottov1.ui.components.ActivityTypeSelectionDialog
 import com.example.ottov1.ui.components.DatePickerDialog
 import com.example.ottov1.ui.components.LocationSelectionDialog
 import com.example.ottov1.ui.components.MapDialog
-import com.example.ottov1.ui.components.MaterialTimePickerDialog
+import com.example.ottov1.ui.components.TimePickerDialog
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -435,30 +435,26 @@ fun AddEditActivityDialog(
                 }
 
                 if (showStartTimePicker) {
-                    MaterialTimePickerDialog(
-                        title = "Select Start Time",
+                    TimePickerDialog(
                         onDismiss = { showStartTimePicker = false },
                         onConfirm = { hour, minute -> 
                             viewModel.updateStartTime(hour, minute)
                             showStartTimePicker = false
                         },
                         initialHour = activity.startHour,
-                        initialMinute = activity.startMinute,
-                        useKeyboardInput = true
+                        initialMinute = activity.startMinute
                     )
                 }
 
                 if (showEndTimePicker) {
-                    MaterialTimePickerDialog(
-                        title = "Select End Time",
+                    TimePickerDialog(
                         onDismiss = { showEndTimePicker = false },
                         onConfirm = { hour, minute -> 
                             viewModel.updateEndTime(hour, minute)
                             showEndTimePicker = false
                         },
                         initialHour = activity.endHour,
-                        initialMinute = activity.endMinute,
-                        useKeyboardInput = true
+                        initialMinute = activity.endMinute
                     )
                 }
 
