@@ -11,16 +11,20 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import androidx.compose.material3.FabPosition
 import com.example.ottov1.R
 import com.example.ottov1.ui.activitylist.ActivityListScreen
 import com.example.ottov1.ui.addedit.AddEditActivityDialog
 import com.example.ottov1.ui.map.ActivityMapScreen
+
+internal const val NEW_ACTIVITY_ID = -1L
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -30,19 +34,35 @@ fun OttoNavigation(
 ) {
     var selectedTab by remember { mutableStateOf(0) }
     var showAddEditDialog by remember { mutableStateOf(false) }
-    var editActivityId by remember { mutableStateOf(-1L) }
+    var editActivityId by remember { mutableStateOf(NEW_ACTIVITY_ID) }
 
     Scaffold(
         modifier = modifier.fillMaxSize(),
+        floatingActionButton = {
+            FloatingActionButton(
+                onClick = {
+                    editActivityId = NEW_ACTIVITY_ID
+                    showAddEditDialog = true
+                },
+                containerColor = MaterialTheme.colorScheme.primary,
+            ) {
+                Icon(
+                    Icons.Default.Add,
+                    contentDescription = stringResource(R.string.nav_add_description),
+                    tint = MaterialTheme.colorScheme.onPrimary
+                )
+            }
+        },
+        floatingActionButtonPosition = FabPosition.Center,
         bottomBar = {
             NavigationBar(
                 containerColor = MaterialTheme.colorScheme.surface,
                 tonalElevation = 0.dp
             ) {
                 NavigationBarItem(
-                    icon = { Icon(Icons.Outlined.Home, "Home") },
+                    icon = { Icon(Icons.Outlined.Home, contentDescription = stringResource(R.string.nav_home_description)) },
                     selected = selectedTab == 0,
-                    onClick = { 
+                    onClick = {
                         selectedTab = 0
                         navController.navigate(Screen.ActivityList.route) {
                             popUpTo(Screen.ActivityList.route) { inclusive = true }
@@ -54,9 +74,9 @@ fun OttoNavigation(
                     )
                 )
                 NavigationBarItem(
-                    icon = { Icon(painterResource(id = R.drawable.ic_landscape_24), "Activities") },
+                    icon = { Icon(painterResource(id = R.drawable.ic_landscape_24), contentDescription = stringResource(R.string.nav_activities_description)) },
                     selected = selectedTab == 1,
-                    onClick = { 
+                    onClick = {
                         selectedTab = 1
                         navController.navigate(Screen.ActivityMap.route) {
                             popUpTo(Screen.ActivityList.route)
@@ -68,41 +88,18 @@ fun OttoNavigation(
                     )
                 )
                 NavigationBarItem(
-                    icon = { 
-                        FloatingActionButton(
-                            onClick = { 
-                                editActivityId = -1L
-                                showAddEditDialog = true
-                            },
-                            containerColor = MaterialTheme.colorScheme.primary,
-                            modifier = Modifier.padding(vertical = 8.dp)
-                        ) {
-                            Icon(
-                                Icons.Default.Add,
-                                contentDescription = "Add",
-                                tint = MaterialTheme.colorScheme.onPrimary
-                            )
-                        }
-                    },
-                    selected = false,
-                    onClick = { 
-                        editActivityId = -1L
-                        showAddEditDialog = true
-                    }
-                )
-                NavigationBarItem(
-                    icon = { Icon(Icons.Outlined.Notifications, "Notifications") },
-                    selected = selectedTab == 3,
-                    onClick = { selectedTab = 3 },
+                    icon = { Icon(Icons.Outlined.Notifications, contentDescription = stringResource(R.string.nav_notifications_description)) },
+                    selected = selectedTab == 2,
+                    onClick = { selectedTab = 2 },
                     colors = NavigationBarItemDefaults.colors(
                         selectedIconColor = MaterialTheme.colorScheme.primary,
                         unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 )
                 NavigationBarItem(
-                    icon = { Icon(Icons.Outlined.Person, "Profile") },
-                    selected = selectedTab == 4,
-                    onClick = { selectedTab = 4 },
+                    icon = { Icon(Icons.Outlined.Person, contentDescription = stringResource(R.string.nav_profile_description)) },
+                    selected = selectedTab == 3,
+                    onClick = { selectedTab = 3 },
                     colors = NavigationBarItemDefaults.colors(
                         selectedIconColor = MaterialTheme.colorScheme.primary,
                         unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant
@@ -149,7 +146,7 @@ fun OttoNavigation(
                 activityId = editActivityId,
                 onDismiss = {
                     showAddEditDialog = false
-                    editActivityId = -1L
+                    editActivityId = NEW_ACTIVITY_ID
                 }
             )
         }

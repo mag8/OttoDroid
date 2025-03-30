@@ -6,7 +6,9 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.example.ottov1.R
 import com.example.ottov1.ui.addedit.ActivityType
 
 @Composable
@@ -19,7 +21,7 @@ fun ActivityTypeSelectionDialog(
         onDismissRequest = onDismiss,
         title = { 
             Text(
-                text = "Select Activity Type",
+                text = stringResource(R.string.select_activity_type_title),
                 style = MaterialTheme.typography.titleLarge
             )
         },
@@ -34,39 +36,33 @@ fun ActivityTypeSelectionDialog(
                             .fillMaxWidth()
                             .clickable { 
                                 onSelect(type)
-                                onDismiss()
+                                // No need to call onDismiss here, parent controls visibility
                             }
-                            .padding(vertical = 12.dp, horizontal = 24.dp),
+                            .padding(vertical = 12.dp, horizontal = 16.dp), // Standard padding
                         horizontalArrangement = Arrangement.spacedBy(16.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         RadioButton(
                             selected = currentType == type,
-                            onClick = { 
-                                onSelect(type)
-                                onDismiss()
-                            },
+                            onClick = { onSelect(type) },
                             colors = RadioButtonDefaults.colors(
                                 selectedColor = MaterialTheme.colorScheme.primary,
                                 unselectedColor = MaterialTheme.colorScheme.onSurfaceVariant
                             )
                         )
                         Text(
-                            text = type.toString(),
+                            text = type.toString(), // Keep default enum toString for now
                             style = MaterialTheme.typography.bodyLarge,
-                            color = if (currentType == type) {
-                                MaterialTheme.colorScheme.primary
-                            } else {
-                                MaterialTheme.colorScheme.onSurface
-                            }
+                            color = MaterialTheme.colorScheme.onSurface // Simpler color logic
                         )
                     }
                 }
             }
         },
-        confirmButton = {
+        confirmButton = { }, // No confirm button needed for selection dialogs
+        dismissButton = {
             TextButton(onClick = onDismiss) {
-                Text("Cancel")
+                Text(stringResource(R.string.cancel_button))
             }
         }
     )
