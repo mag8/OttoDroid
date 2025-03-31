@@ -13,6 +13,8 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
+private const val DATABASE_NAME = "otto_database"
+
 @Module
 @InstallIn(SingletonComponent::class)
 object DatabaseModule {
@@ -24,7 +26,7 @@ object DatabaseModule {
         return Room.databaseBuilder(
             context,
             AppDatabase::class.java,
-            "otto_database"
+            DATABASE_NAME
         )
         .addMigrations(AppDatabase.MIGRATION_4_5, AppDatabase.MIGRATION_5_6)
         .build()

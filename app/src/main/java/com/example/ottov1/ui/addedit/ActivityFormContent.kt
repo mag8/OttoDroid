@@ -38,6 +38,11 @@ import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 import kotlin.math.roundToInt
 
+// Constants for People Slider
+private const val MIN_PEOPLE = 1
+private const val MAX_PEOPLE = 8
+private const val PEOPLE_SLIDER_STEPS = MAX_PEOPLE - MIN_PEOPLE - 1 // = 6
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ActivityFormContent(
@@ -213,23 +218,31 @@ fun ActivityFormContent(
                     tint = MaterialTheme.colorScheme.onSurfaceVariant
                 ) */
                 var sliderPositions by remember {
-                    mutableStateOf(activity.minPeople.toFloat()..activity.maxPeople.toFloat())
+                    // Ensure initial values are within the valid range
+                    val initialMin = activity.minPeople.toFloat().coerceIn(MIN_PEOPLE.toFloat(), MAX_PEOPLE.toFloat())
+                    val initialMax = activity.maxPeople.toFloat().coerceIn(initialMin, MAX_PEOPLE.toFloat())
+                    mutableStateOf(initialMin..initialMax)
                 }
 
                 RangeSlider(
                     value = sliderPositions,
                     onValueChange = { range -> sliderPositions = range },
-                    valueRange = 1f..8f,
-                    steps = 6,
+                    valueRange = MIN_PEOPLE.toFloat()..MAX_PEOPLE.toFloat(), // Use constants
+                    steps = PEOPLE_SLIDER_STEPS, // Use constant
                     onValueChangeFinished = {
-                        val min = sliderPositions.start.roundToInt().coerceIn(1, 8)
-                        val max = sliderPositions.endInclusive.roundToInt().coerceIn(min, 8)
+                        val min = sliderPositions.start.roundToInt().coerceIn(MIN_PEOPLE, MAX_PEOPLE)
+                        val max = sliderPositions.endInclusive.roundToInt().coerceIn(min, MAX_PEOPLE)
                         onPeopleChange(min, max)
                     },
                     modifier = Modifier.weight(1f)
                 )
                 Text(
-                    text = "${sliderPositions.start.roundToInt()} - ${sliderPositions.endInclusive.roundToInt()}",
+                    // Use formatted string resource
+                    text = stringResource(
+                        R.string.people_range_display,
+                        sliderPositions.start.roundToInt(),
+                        sliderPositions.endInclusive.roundToInt()
+                    ),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurface
                 )
@@ -480,18 +493,26 @@ fun ActivityFormContent(
 
 // --- Helper Functions ---
 
+// Shared date formatter (consistent with list view)
 private fun formatDate(timestamp: Long): String {
     return try {
         val instant = Instant.ofEpochMilli(timestamp)
         val localDateTime = LocalDateTime.ofInstant(instant, ZoneId.systemDefault())
+        // Use FULL style for detail view
         DateTimeFormatter.ofLocalizedDate(FormatStyle.FULL).format(localDateTime)
     } catch (e: Exception) {
-        SimpleDateFormat("EEEE, MMMM d, yyyy", Locale.getDefault()).format(Date(timestamp))
+        SimpleDateFormat("EEEE, MMMM d, yyyy", Locale.getDefault()).format(Date(timestamp)) // Fallback
     }
 }
 
+// Use locale-aware time formatting
 private fun formatTime(hour: Int, minute: Int): String {
-    return String.format(Locale.getDefault(), "%02d:%02d", hour, minute)
+     return try {
+         val localTime = LocalDateTime.now().withHour(hour).withMinute(minute) // Use LocalDateTime to format
+         DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT).format(localTime)
+     } catch (e: Exception) {
+         String.format(Locale.getDefault(), "%02d:%02d", hour, minute) // Fallback
+     }
 }
 
 // --- Resource IDs (to be moved to strings.xml) ---

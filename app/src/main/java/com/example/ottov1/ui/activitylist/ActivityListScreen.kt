@@ -21,6 +21,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -28,8 +30,17 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.ottov1.R
 import com.example.ottov1.data.model.ClimbingActivity
+import com.example.ottov1.ui.theme.OttoListBackground
+import com.example.ottov1.ui.theme.OttoListBorder
+import com.example.ottov1.ui.theme.OttoListSubtleText
+import com.example.ottov1.ui.theme.OttoListTitle
 import java.text.SimpleDateFormat
 import java.util.*
+import java.time.Instant
+import java.time.LocalDateTime
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
+import java.time.format.FormatStyle
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -46,7 +57,7 @@ fun ActivityListScreen(
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(16.dp)
+                    .padding(dimensionResource(R.dimen.activity_horizontal_margin))
             ) {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
@@ -54,45 +65,44 @@ fun ActivityListScreen(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = "Activity",
-                        fontSize = 32.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = Color(0xFF1B3252)
+                        text = stringResource(R.string.activity_list_title),
+                        style = MaterialTheme.typography.headlineMedium,
+                        color = OttoListTitle
                     )
                     Row {
                         IconButton(onClick = onNavigateToMap) {
                             Icon(
                                 painter = painterResource(id = R.drawable.ic_map_24),
-                                contentDescription = "Map View",
-                                tint = Color(0xFF1B3252)
+                                contentDescription = stringResource(R.string.activity_list_map_view_description),
+                                tint = OttoListTitle
                             )
                         }
                         IconButton(onClick = { /* TODO: Filter */ }) {
                             Icon(
                                 painter = painterResource(id = R.drawable.ic_filter_alt_24),
-                                contentDescription = "Filter",
-                                tint = Color(0xFF1B3252)
+                                contentDescription = stringResource(R.string.activity_list_filter_description),
+                                tint = OttoListTitle
                             )
                         }
                     }
                 }
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(dimensionResource(R.dimen.spacing_large)))
                 OutlinedTextField(
                     value = searchQuery,
                     onValueChange = { searchQuery = it },
                     modifier = Modifier.fillMaxWidth(),
-                    placeholder = { Text("Search") },
+                    placeholder = { Text(stringResource(R.string.activity_list_search_placeholder)) },
                     leadingIcon = {
                         Icon(
                             imageVector = Icons.Outlined.Search,
-                            contentDescription = "Search",
-                            tint = Color(0xFF1B3252)
+                            contentDescription = stringResource(R.string.activity_list_search_description),
+                            tint = OttoListTitle
                         )
                     },
-                    shape = RoundedCornerShape(16.dp),
+                    shape = RoundedCornerShape(dimensionResource(R.dimen.spacing_large)),
                     colors = OutlinedTextFieldDefaults.colors(
-                        unfocusedBorderColor = Color(0xFFE0E0E0),
-                        focusedBorderColor = Color(0xFF1B3252)
+                        unfocusedBorderColor = OttoListBorder,
+                        focusedBorderColor = OttoListTitle
                     ),
                     singleLine = true
                 )
@@ -103,27 +113,30 @@ fun ActivityListScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues),
-            color = Color.White
+            color = OttoListBackground
         ) {
             if (activities.isEmpty()) {
                 Column(
                     modifier = Modifier
                         .fillMaxSize()
-                        .padding(horizontal = 24.dp),
+                        .padding(horizontal = dimensionResource(R.dimen.spacing_extra_large)),
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Text(
-                        text = "No activities yet",
+                        text = stringResource(R.string.activity_list_no_activities),
                         style = MaterialTheme.typography.bodyLarge,
-                        color = Color(0xFF9AA0A6)
+                        color = OttoListSubtleText
                     )
                 }
             } else {
                 LazyColumn(
                     modifier = Modifier.fillMaxSize(),
-                    contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
-                    verticalArrangement = Arrangement.spacedBy(12.dp)
+                    contentPadding = PaddingValues(
+                        horizontal = dimensionResource(R.dimen.activity_horizontal_margin),
+                        vertical = dimensionResource(R.dimen.spacing_medium)
+                    ),
+                    verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.spacing_medium))
                 ) {
                     items(activities) { activity ->
                         ActivityItem(
@@ -146,48 +159,47 @@ private fun ActivityItem(
     Card(
         onClick = onClick,
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(12.dp),
+        shape = RoundedCornerShape(dimensionResource(R.dimen.card_corner_radius)),
         colors = CardDefaults.cardColors(
-            containerColor = Color.White
+            containerColor = OttoListBackground
         ),
         elevation = CardDefaults.cardElevation(
-            defaultElevation = 2.dp
+            defaultElevation = dimensionResource(R.dimen.spacing_extra_small)
         )
     ) {
         Column(
             modifier = Modifier
-                .padding(16.dp)
+                .padding(dimensionResource(R.dimen.spacing_large))
                 .fillMaxWidth()
         ) {
             Text(
                 text = activity.name,
-                fontSize = 18.sp,
-                fontWeight = FontWeight.SemiBold,
-                color = Color(0xFF1B3252)
+                style = MaterialTheme.typography.titleMedium,
+                color = OttoListTitle
             )
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(dimensionResource(R.dimen.spacing_medium)))
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = formatDate(activity.date),
-                    fontSize = 14.sp,
-                    color = Color(0xFF9AA0A6)
+                    text = formatDateForList(activity.date),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = OttoListSubtleText
                 )
                 Icon(
                     imageVector = Icons.Filled.ArrowForward,
-                    contentDescription = "View Details",
-                    tint = Color(0xFF9AA0A6)
+                    contentDescription = stringResource(R.string.activity_list_view_details_description),
+                    tint = OttoListSubtleText
                 )
             }
             if (!activity.description.isNullOrBlank()) {
-                Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.height(dimensionResource(R.dimen.spacing_medium)))
                 Text(
                     text = activity.description,
-                    fontSize = 14.sp,
-                    color = Color(0xFF9AA0A6),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = OttoListSubtleText,
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis
                 )
@@ -196,7 +208,12 @@ private fun ActivityItem(
     }
 }
 
-private fun formatDate(timestamp: Long): String {
-    val dateFormat = SimpleDateFormat("MMM d, yyyy", Locale.getDefault())
-    return dateFormat.format(Date(timestamp))
+private fun formatDateForList(timestamp: Long): String {
+    return try {
+        val instant = Instant.ofEpochMilli(timestamp)
+        val localDateTime = LocalDateTime.ofInstant(instant, ZoneId.systemDefault())
+        DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM).format(localDateTime)
+    } catch (e: Exception) {
+        SimpleDateFormat("MMM d, yyyy", Locale.getDefault()).format(Date(timestamp))
+    }
 } 
