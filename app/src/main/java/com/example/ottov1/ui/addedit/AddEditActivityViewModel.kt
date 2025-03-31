@@ -45,6 +45,9 @@ class AddEditActivityViewModel @Inject constructor(
     private val _saveResult = MutableStateFlow<SaveResult?>(null)
     val saveResult: StateFlow<SaveResult?> = _saveResult
 
+    // Define the list of available grades
+    val availableGrades: List<String> = listOf("6a", "6b", "6c", "7a", "7b", "7c", "8a", "8b", "8c", "9")
+
     fun loadActivity(id: Long) {
         Log.d(TAG, "Loading activity with id: $id")
         if (id == NEW_ACTIVITY_ID) {
@@ -97,6 +100,11 @@ class AddEditActivityViewModel @Inject constructor(
     fun updateActivityType(type: ActivityType) {
         Log.d(TAG, "Updating activity type to: ${type.getString(stringProvider)}")
         _activity.value = _activity.value.copy(type = type)
+    }
+
+    fun updateGrade(grade: String) {
+        Log.d(TAG, "Updating grade to: $grade")
+        _activity.value = _activity.value.copy(grade = grade)
     }
 
     fun updateLocation(location: String) {

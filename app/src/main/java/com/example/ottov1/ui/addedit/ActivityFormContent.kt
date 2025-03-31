@@ -29,6 +29,7 @@ import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.ArrowDropDown
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
@@ -48,6 +49,8 @@ fun ActivityFormContent(
     onStartTimeChange: (Int, Int) -> Unit,
     onEndTimeChange: (Int, Int) -> Unit,
     onLocationChange: (String) -> Unit,
+    onGradeChange: (String) -> Unit,
+    availableGrades: List<String>,
     // We pass mutable states for dialog visibility to allow the parent control
     showDatePicker: MutableState<Boolean>,
     showActivityTypeDialog: MutableState<Boolean>,
@@ -142,6 +145,45 @@ fun ActivityFormContent(
                     contentDescription = stringResource(R.string.content_description_navigate_forward),
                     tint = MaterialTheme.colorScheme.onSurfaceVariant
                 )
+            }
+        }
+
+        // --- Grade Section ---
+        var gradeDropdownExpanded by remember { mutableStateOf(false) }
+        ExposedDropdownMenuBox(
+            expanded = gradeDropdownExpanded,
+            onExpandedChange = { gradeDropdownExpanded = !gradeDropdownExpanded },
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            OutlinedTextField(
+                value = activity.grade ?: "",
+                onValueChange = {},
+                readOnly = true,
+                label = { Text(stringResource(R.string.grade_label)) },
+                trailingIcon = {
+                    ExposedDropdownMenuDefaults.TrailingIcon(expanded = gradeDropdownExpanded)
+                },
+                modifier = Modifier
+                    .menuAnchor()
+                    .fillMaxWidth(),
+                colors = OutlinedTextFieldDefaults.colors(
+                    focusedBorderColor = MaterialTheme.colorScheme.primary,
+                    unfocusedBorderColor = MaterialTheme.colorScheme.outline
+                )
+            )
+            ExposedDropdownMenu(
+                expanded = gradeDropdownExpanded,
+                onDismissRequest = { gradeDropdownExpanded = false }
+            ) {
+                availableGrades.forEach { grade ->
+                    DropdownMenuItem(
+                        text = { Text(grade) },
+                        onClick = {
+                            onGradeChange(grade)
+                            gradeDropdownExpanded = false
+                        }
+                    )
+                }
             }
         }
 

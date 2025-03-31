@@ -26,7 +26,7 @@ object DatabaseModule {
             AppDatabase::class.java,
             "otto_database"
         )
-        .fallbackToDestructiveMigration()
+        .addMigrations(AppDatabase.MIGRATION_4_5)
         .build()
     }
 

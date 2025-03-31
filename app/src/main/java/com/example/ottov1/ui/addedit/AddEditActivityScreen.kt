@@ -156,6 +156,8 @@ fun AddEditActivityScreen(
             onStartTimeChange = { h, m -> viewModel.updateStartTime(h, m) },
             onEndTimeChange = { h, m -> viewModel.updateEndTime(h, m) },
             onLocationChange = { viewModel.updateLocation(it) },
+            onGradeChange = { viewModel.updateGrade(it) },
+            availableGrades = viewModel.availableGrades,
             showDatePicker = showDatePicker,
             showActivityTypeDialog = showActivityTypeDialog,
             showStartTimePicker = showStartTimePicker,
