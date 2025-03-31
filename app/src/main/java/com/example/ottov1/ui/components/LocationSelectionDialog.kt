@@ -4,7 +4,8 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.res.stringResource
+import com.example.ottov1.R
 
 @Composable
 fun LocationSelectionDialog(
@@ -16,14 +17,18 @@ fun LocationSelectionDialog(
 
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text("Enter Location") },
+        title = { Text(stringResource(R.string.enter_location_title)) },
         text = {
             OutlinedTextField(
                 value = location,
                 onValueChange = { location = it },
                 modifier = Modifier.fillMaxWidth(),
-                label = { Text("Location") },
-                singleLine = true
+                label = { Text(stringResource(R.string.location_label)) },
+                singleLine = true,
+                colors = OutlinedTextFieldDefaults.colors(
+                    focusedBorderColor = MaterialTheme.colorScheme.primary,
+                    unfocusedBorderColor = MaterialTheme.colorScheme.outline
+                )
             )
         },
         confirmButton = {
@@ -32,12 +37,12 @@ fun LocationSelectionDialog(
                     onConfirm(location)
                 }
             ) {
-                Text("OK")
+                Text(stringResource(R.string.ok_button))
             }
         },
         dismissButton = {
             TextButton(onClick = onDismiss) {
-                Text("Cancel")
+                Text(stringResource(R.string.cancel_button))
             }
         }
     )

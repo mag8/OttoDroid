@@ -1,3 +1,88 @@
 <resources>
     <string name="app_name">OttoV1</string>
+
+    <!-- Add/Edit Activity -->
+    <string name="add_activity_title">Add Activity</string>
+    <string name="edit_activity_title">Edit Activity</string>
+    <string name="activity_name_label">Activity Name</string>
+    <string name="activity_name_required">Activity name is required</string>
+    <string name="description_label">Description</string>
+    <string name="activity_type_label">Activity Type</string>
+    <string name="date_label">Date</string>
+    <string name="time_label">Time</string>
+    <string name="start_time_label">Start Time</string>
+    <string name="end_time_label">End Time</string>
+    <string name="location_label">Location</string>
+    <string name="edit_location_button">Edit Location</string>
+    <string name="map_location_label">Map Location</string>
+    <string name="map_placeholder_text">Map view for location: %1$s (Implementation Pending)</string>
+
+    <!-- Buttons & Actions -->
+    <string name="save_button">Save</string>
+    <string name="close_button">Close</string>
+    <string name="back_button">Back</string>
+    <string name="ok_button">OK</string>
+    <string name="cancel_button">Cancel</string>
+    <string name="delete_button">Delete</string>
+    <string name="delete_confirmation_title">Delete Activity</string>
+    <string name="delete_confirmation_message">Are you sure you want to delete this activity?</string>
+
+    <!-- Dialog Titles -->
+    <string name="select_activity_type_title">Select Activity Type</string>
+    <string name="select_date_title">Select date</string>
+    <string name="enter_location_title">Enter Location</string>
+    <string name="location_map_title">Location Map</string>
+
+    <!-- Errors -->
+    <string name="error_dialog_title">Error</string>
+    <string name="unexpected_error_message">Unexpected error: %1$s</string> <!-- Example with placeholder -->
+
+    <!-- Time Picker -->
+    <string name="time_picker_hour_label">Hour</string>
+    <string name="time_picker_minute_label">Minute</string>
+    <string name="time_picker_hour_error">Enter 00–23</string>
+    <string name="time_picker_minute_error">Enter 00–59</string>
+
+    <!-- Navigation -->
+    <string name="nav_home_description">Home</string>
+    <string name="nav_activities_description">Activities Map</string>
+    <string name="nav_add_description">Add Activity</string>
+    <string name="nav_notifications_description">Notifications</string>
+    <string name="nav_profile_description">Profile</string>
+
+    <!-- Activity Types -->
+    <string name="activity_type_sport">Sport</string>
+    <string name="activity_type_trad">Trad</string>
+    <string name="activity_type_boulder">Boulder</string>
+    <string name="activity_type_multi_pitch">Multi-Pitch</string>
+    <string name="activity_type_climbing_gym">Climbing Gym</string>
+
+    <!-- Error Messages -->
+    <string name="error_activity_not_found">Activity not found</string>
+    <string name="error_loading_activity">Failed to load activity: %1$s</string>
+    <string name="error_saving_activity">Failed to save activity: %1$s</string>
+    <string name="error_deleting_activity">Failed to delete activity: %1$s</string>
+    <!-- Using activity_name_required for blank name error -->
+
+    <!-- Misc UI -->
+    <string name="time_separator">:</string>
+    <string name="content_description_navigate_forward">Navigate forward</string>
+    <string name="content_description_activity_info">Activity information</string>
+    <string name="content_description_activity_description">Activity description</string>
+    <string name="content_description_delete_warning">Warning</string>
+
+    <!-- Form Labels -->
+    <string name="grade_label">Grade</string>
+    <string name="people_label">People</string>
+    <string name="people_range_display">%1$d - %2$d</string> <!-- For slider -->
+
+    <!-- Activity List Screen -->
+    <string name="activity_list_title">Activity</string>
+    <string name="activity_list_map_view_description">Map View</string>
+    <string name="activity_list_filter_description">Filter</string>
+    <string name="activity_list_search_description">Search</string>
+    <string name="activity_list_search_placeholder">Search</string>
+    <string name="activity_list_no_activities">No activities yet</string>
+    <string name="activity_list_view_details_description">View Details</string>
+
 </resources>
