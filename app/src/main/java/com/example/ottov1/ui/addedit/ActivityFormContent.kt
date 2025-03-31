@@ -30,11 +30,13 @@ import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.ArrowDropDown
+// import androidx.compose.material.icons.filled.People
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
+import kotlin.math.roundToInt
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -50,6 +52,7 @@ fun ActivityFormContent(
     onEndTimeChange: (Int, Int) -> Unit,
     onLocationChange: (String) -> Unit,
     onGradeChange: (String) -> Unit,
+    onPeopleChange: (min: Int, max: Int) -> Unit,
     availableGrades: List<String>,
     showDatePicker: MutableState<Boolean>,
     showStartTimePicker: MutableState<Boolean>,
@@ -188,6 +191,48 @@ fun ActivityFormContent(
                         }
                     )
                 }
+            }
+        }
+
+        // --- People Range Slider Section ---
+        Column(modifier = Modifier.fillMaxWidth()) {
+            Text(
+                text = stringResource(R.string.people_label),
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier.padding(bottom = dimensionResource(R.dimen.spacing_small))
+            )
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.spacing_medium))
+            ) {
+                // Remove Icon usage
+                /* Icon(
+                    imageVector = Icons.Default.People,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant
+                ) */
+                var sliderPositions by remember {
+                    mutableStateOf(activity.minPeople.toFloat()..activity.maxPeople.toFloat())
+                }
+
+                RangeSlider(
+                    value = sliderPositions,
+                    onValueChange = { range -> sliderPositions = range },
+                    valueRange = 1f..8f,
+                    steps = 6,
+                    onValueChangeFinished = {
+                        val min = sliderPositions.start.roundToInt().coerceIn(1, 8)
+                        val max = sliderPositions.endInclusive.roundToInt().coerceIn(min, 8)
+                        onPeopleChange(min, max)
+                    },
+                    modifier = Modifier.weight(1f)
+                )
+                Text(
+                    text = "${sliderPositions.start.roundToInt()} - ${sliderPositions.endInclusive.roundToInt()}",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
             }
         }
 

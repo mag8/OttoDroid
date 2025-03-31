@@ -107,6 +107,14 @@ class AddEditActivityViewModel @Inject constructor(
         _activity.value = _activity.value.copy(grade = grade)
     }
 
+    fun updatePeople(min: Int, max: Int) {
+        Log.d(TAG, "Updating people range to: $min - $max")
+        // Ensure min <= max, although slider should handle this
+        val actualMin = min.coerceAtLeast(1)
+        val actualMax = max.coerceAtLeast(actualMin)
+        _activity.value = _activity.value.copy(minPeople = actualMin, maxPeople = actualMax)
+    }
+
     fun updateLocation(location: String) {
         Log.d(TAG, "Updating location to: $location")
         _activity.value = _activity.value.copy(location = location)

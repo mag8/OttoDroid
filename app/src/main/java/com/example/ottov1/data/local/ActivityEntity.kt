@@ -20,7 +20,9 @@ data class ActivityEntity(
     val endHour: Int,
     val endMinute: Int,
     val location: String?,
-    val grade: String?
+    val grade: String?,
+    val minPeople: Int = 1,
+    val maxPeople: Int = 1
 ) {
     fun toClimbingActivity() = ClimbingActivity(
         id = id,
@@ -35,7 +37,9 @@ data class ActivityEntity(
         endHour = endHour,
         endMinute = endMinute,
         location = location,
-        grade = grade
+        grade = grade,
+        minPeople = minPeople,
+        maxPeople = maxPeople
     )
 
     companion object {
@@ -52,7 +56,9 @@ data class ActivityEntity(
             endHour = activity.endHour,
             endMinute = activity.endMinute,
             location = activity.location,
-            grade = activity.grade
+            grade = activity.grade,
+            minPeople = activity.minPeople,
+            maxPeople = activity.maxPeople
         )
     }
 } 

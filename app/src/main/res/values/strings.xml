@@ -73,5 +73,6 @@
 
     <!-- Form Labels -->
     <string name="grade_label">Grade</string>
+    <string name="people_label">People</string>
 
 </resources>

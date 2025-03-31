@@ -15,5 +15,7 @@ data class ClimbingActivity(
     val endHour: Int = 10,
     val endMinute: Int = 0,
     val location: String? = null,
-    val grade: String? = null
+    val grade: String? = null,
+    val minPeople: Int = 1,
+    val maxPeople: Int = 1
 ) 
