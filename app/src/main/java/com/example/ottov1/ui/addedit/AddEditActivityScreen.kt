@@ -41,7 +41,6 @@ fun AddEditActivityScreen(
     var showErrorDialog by remember { mutableStateOf(false) }
     var errorMessage by remember { mutableStateOf("") }
     val showDatePicker = remember { mutableStateOf(false) }
-    val showActivityTypeDialog = remember { mutableStateOf(false) }
     val showStartTimePicker = remember { mutableStateOf(false) }
     val showEndTimePicker = remember { mutableStateOf(false) }
     val showLocationDialog = remember { mutableStateOf(false) }
@@ -159,7 +158,6 @@ fun AddEditActivityScreen(
             onGradeChange = { viewModel.updateGrade(it) },
             availableGrades = viewModel.availableGrades,
             showDatePicker = showDatePicker,
-            showActivityTypeDialog = showActivityTypeDialog,
             showStartTimePicker = showStartTimePicker,
             showEndTimePicker = showEndTimePicker,
             showLocationDialog = showLocationDialog,

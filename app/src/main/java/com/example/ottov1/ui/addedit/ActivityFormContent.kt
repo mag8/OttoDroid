@@ -51,9 +51,7 @@ fun ActivityFormContent(
     onLocationChange: (String) -> Unit,
     onGradeChange: (String) -> Unit,
     availableGrades: List<String>,
-    // We pass mutable states for dialog visibility to allow the parent control
     showDatePicker: MutableState<Boolean>,
-    showActivityTypeDialog: MutableState<Boolean>,
     showStartTimePicker: MutableState<Boolean>,
     showEndTimePicker: MutableState<Boolean>,
     showLocationDialog: MutableState<Boolean>,
@@ -108,43 +106,49 @@ fun ActivityFormContent(
             )
         )
 
-        // --- Activity Type Section ---
-        OutlinedCard(
-            modifier = Modifier
-                .fillMaxWidth()
-                .clickable { showActivityTypeDialog.value = true },
-            border = BorderStroke(dimensionResource(R.dimen.card_border_thickness), MaterialTheme.colorScheme.outline),
-            shape = RoundedCornerShape(dimensionResource(R.dimen.card_corner_radius))
+        // --- Activity Type Section (Dropdown) ---
+        var activityTypeExpanded by remember { mutableStateOf(false) }
+        ExposedDropdownMenuBox(
+            expanded = activityTypeExpanded,
+            onExpandedChange = { activityTypeExpanded = !activityTypeExpanded },
+            modifier = Modifier.fillMaxWidth()
         ) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(dimensionResource(R.dimen.spacing_large)),
-                horizontalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.spacing_large)),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Icon(
-                    imageVector = Icons.Default.List,
-                    contentDescription = stringResource(R.string.activity_type_label),
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant
-                )
-                Column(modifier = Modifier.weight(1f)) {
-                    Text(
-                        text = stringResource(R.string.activity_type_label),
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+            OutlinedTextField(
+                value = stringResource(activity.type.stringResId),
+                onValueChange = {},
+                readOnly = true,
+                label = { Text(stringResource(R.string.activity_type_label)) },
+                leadingIcon = {
+                    Icon(
+                        imageVector = Icons.Default.List,
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.onSurfaceVariant
                     )
-                    Text(
-                        text = stringResource(activity.type.stringResId),
-                        style = MaterialTheme.typography.bodyLarge,
-                        color = MaterialTheme.colorScheme.onSurface
+                },
+                trailingIcon = {
+                    ExposedDropdownMenuDefaults.TrailingIcon(expanded = activityTypeExpanded)
+                },
+                modifier = Modifier
+                    .menuAnchor()
+                    .fillMaxWidth(),
+                colors = OutlinedTextFieldDefaults.colors(
+                    focusedBorderColor = MaterialTheme.colorScheme.primary,
+                    unfocusedBorderColor = MaterialTheme.colorScheme.outline
+                )
+            )
+            ExposedDropdownMenu(
+                expanded = activityTypeExpanded,
+                onDismissRequest = { activityTypeExpanded = false }
+            ) {
+                ActivityType.values().forEach { type ->
+                    DropdownMenuItem(
+                        text = { Text(stringResource(type.stringResId)) },
+                        onClick = {
+                            onActivityTypeChange(type)
+                            activityTypeExpanded = false
+                        }
                     )
                 }
-                Icon(
-                    imageVector = Icons.Default.KeyboardArrowRight,
-                    contentDescription = stringResource(R.string.content_description_navigate_forward),
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant
-                )
             }
         }
 
@@ -374,17 +378,6 @@ fun ActivityFormContent(
     }
 
     // --- Dialogs ---
-    if (showActivityTypeDialog.value) {
-        ActivityTypeSelectionDialog(
-            onDismiss = { showActivityTypeDialog.value = false },
-            onSelect = { type ->
-                onActivityTypeChange(type)
-                showActivityTypeDialog.value = false
-            },
-            currentType = activity.type
-        )
-    }
-
     if (showDatePicker.value) {
         DatePickerDialog(
             onDismiss = { showDatePicker.value = false },
