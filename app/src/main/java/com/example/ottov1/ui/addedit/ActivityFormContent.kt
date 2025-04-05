@@ -15,7 +15,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.unit.dp
 import com.example.ottov1.R
-import com.example.ottov1.data.local.ActivityEntity
 import com.example.ottov1.data.model.ClimbingActivity
 import com.example.ottov1.ui.components.ActivityTypeSelectionDialog
 import com.example.ottov1.ui.components.DatePickerDialog

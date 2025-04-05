@@ -1,7 +1,7 @@
 package com.example.ottov1.data.repository
 
-import com.example.ottov1.data.local.ActivityDao
-import com.example.ottov1.data.local.ActivityEntity
+import com.example.ottov1.data.local.dao.ActivityDao
+import com.example.ottov1.data.local.entity.ActivityEntity
 import com.example.ottov1.data.model.ClimbingActivity
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map

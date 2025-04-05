@@ -3,7 +3,7 @@ package com.example.ottov1.util
 object Constants {
     // Database
     const val DATABASE_NAME = "otto_database"
-    const val DATABASE_VERSION = 10
+    const val DATABASE_VERSION = 11
     
     // Default values
     const val DEFAULT_MIN_PEOPLE = 1

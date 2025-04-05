@@ -2,7 +2,7 @@ package com.example.ottov1.di
 
 import android.content.Context
 import androidx.room.Room
-import com.example.ottov1.data.local.ActivityDao
+import com.example.ottov1.data.local.dao.ActivityDao
 import com.example.ottov1.data.local.AppDatabase
 import com.example.ottov1.data.repository.ActivityRepository
 import com.example.ottov1.data.repository.ActivityRepositoryImpl
@@ -26,7 +26,9 @@ object DatabaseModule {
             context,
             AppDatabase::class.java,
             Constants.DATABASE_NAME
-        ).build()
+        )
+        .fallbackToDestructiveMigration()
+        .build()
     }
 
     @Provides

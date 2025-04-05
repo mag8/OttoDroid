@@ -1,6 +1,7 @@
-package com.example.ottov1.data.local
+package com.example.ottov1.data.local.dao
 
 import androidx.room.*
+import com.example.ottov1.data.local.entity.ActivityEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao

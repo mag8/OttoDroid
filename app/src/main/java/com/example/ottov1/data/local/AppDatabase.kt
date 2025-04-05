@@ -7,6 +7,7 @@ import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.example.ottov1.data.local.dao.ActivityDao
 import com.example.ottov1.data.local.entity.ActivityEntity
+import com.example.ottov1.data.local.converter.Converters
 import com.example.ottov1.util.Constants
 
 @Database(
