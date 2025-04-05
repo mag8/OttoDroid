@@ -447,7 +447,7 @@ fun ActivityFormContent(
         )
     }
 
-     if (showStartTimePicker.value) {
+    if (showStartTimePicker.value) {
         TimePickerDialog(
             onDismiss = { showStartTimePicker.value = false },
             onConfirm = { hour, minute ->
@@ -483,7 +483,6 @@ fun ActivityFormContent(
     }
 
     if (showMapDialog.value) {
-        // Assuming MapDialog just needs dismissal logic for now
         MapDialog(
             onDismiss = { showMapDialog.value = false },
             location = activity.location

@@ -7,7 +7,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 
 @Database(
     entities = [ActivityEntity::class],
-    version = 6,
+    version = 10,
     exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {
@@ -27,6 +27,30 @@ abstract class AppDatabase : RoomDatabase() {
                 // Add columns with NOT NULL and DEFAULT value to handle existing rows
                 database.execSQL("ALTER TABLE activities ADD COLUMN minPeople INTEGER NOT NULL DEFAULT 1")
                 database.execSQL("ALTER TABLE activities ADD COLUMN maxPeople INTEGER NOT NULL DEFAULT 1")
+            }
+        }
+
+        // Migration from 6 to 7: Add any new columns or changes
+        val MIGRATION_6_7: Migration = object : Migration(6, 7) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                // If no schema changes, this can be empty
+                // Just needed for version bump
+            }
+        }
+
+        // Migration from 7 to 8: Add any new columns or changes
+        val MIGRATION_7_8: Migration = object : Migration(7, 8) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                // If no schema changes, this can be empty
+                // Just needed for version bump
+            }
+        }
+
+        // Migration from 8 to 9: Add any new columns or changes
+        val MIGRATION_8_9: Migration = object : Migration(8, 9) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                // If no schema changes, this can be empty
+                // Just needed for version bump
             }
         }
     }

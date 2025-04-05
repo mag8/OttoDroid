@@ -28,7 +28,7 @@ object DatabaseModule {
             AppDatabase::class.java,
             DATABASE_NAME
         )
-        .addMigrations(AppDatabase.MIGRATION_4_5, AppDatabase.MIGRATION_5_6)
+        .fallbackToDestructiveMigration()
         .build()
     }
 
