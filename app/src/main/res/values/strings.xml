@@ -85,4 +85,6 @@
     <string name="activity_list_no_activities">No activities yet</string>
     <string name="activity_list_view_details_description">View Details</string>
 
+    <!-- API Keys -->
+    <string name="google_maps_key">${MAPS_API_KEY}</string>
 </resources>

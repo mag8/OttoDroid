@@ -10,6 +10,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.dimensionResource
@@ -73,7 +74,9 @@ fun ActivityFormContent(
         OutlinedTextField(
             value = activity.name,
             onValueChange = onNameChange,
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .testTag("name_field"),
             label = { Text(stringResource(R.string.activity_name_label)) },
             supportingText = if (isNameError) {
                 { Text(stringResource(R.string.activity_name_required)) }
@@ -99,7 +102,8 @@ fun ActivityFormContent(
             onValueChange = onDescriptionChange,
             modifier = Modifier
                 .fillMaxWidth()
-                .heightIn(min = dimensionResource(R.dimen.text_field_min_height)),
+                .heightIn(min = dimensionResource(R.dimen.text_field_min_height))
+                .testTag("description_field"),
             label = { Text(stringResource(R.string.description_label)) },
             leadingIcon = {
                 Icon(
@@ -125,6 +129,10 @@ fun ActivityFormContent(
                 value = stringResource(activity.type.stringResId),
                 onValueChange = {},
                 readOnly = true,
+                modifier = Modifier
+                    .menuAnchor()
+                    .fillMaxWidth()
+                    .testTag("activity_type_field"),
                 label = { Text(stringResource(R.string.activity_type_label)) },
                 leadingIcon = {
                     Icon(
@@ -136,9 +144,6 @@ fun ActivityFormContent(
                 trailingIcon = {
                     ExposedDropdownMenuDefaults.TrailingIcon(expanded = activityTypeExpanded)
                 },
-                modifier = Modifier
-                    .menuAnchor()
-                    .fillMaxWidth(),
                 colors = OutlinedTextFieldDefaults.colors(
                     focusedBorderColor = MaterialTheme.colorScheme.primary,
                     unfocusedBorderColor = MaterialTheme.colorScheme.outline
@@ -171,13 +176,21 @@ fun ActivityFormContent(
                 value = activity.grade ?: "",
                 onValueChange = {},
                 readOnly = true,
+                modifier = Modifier
+                    .menuAnchor()
+                    .fillMaxWidth()
+                    .testTag("grade_field"),
                 label = { Text(stringResource(R.string.grade_label)) },
+                leadingIcon = {
+                    Icon(
+                        imageVector = Icons.Default.Edit,
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                },
                 trailingIcon = {
                     ExposedDropdownMenuDefaults.TrailingIcon(expanded = gradeDropdownExpanded)
                 },
-                modifier = Modifier
-                    .menuAnchor()
-                    .fillMaxWidth(),
                 colors = OutlinedTextFieldDefaults.colors(
                     focusedBorderColor = MaterialTheme.colorScheme.primary,
                     unfocusedBorderColor = MaterialTheme.colorScheme.outline
@@ -253,7 +266,7 @@ fun ActivityFormContent(
         OutlinedCard(
             modifier = Modifier
                 .fillMaxWidth()
-                .clickable { showDatePicker.value = true },
+                .testTag("date_field"),
             border = BorderStroke(dimensionResource(R.dimen.card_border_thickness), MaterialTheme.colorScheme.outline),
             shape = RoundedCornerShape(dimensionResource(R.dimen.card_corner_radius))
         ) {
@@ -298,26 +311,14 @@ fun ActivityFormContent(
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = dimensionResource(R.dimen.spacing_large), vertical = dimensionResource(R.dimen.spacing_medium)),
-                verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.spacing_medium))
+                    .padding(dimensionResource(R.dimen.spacing_large))
             ) {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.spacing_large)),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_access_time),
-                        contentDescription = stringResource(R.string.time_label),
-                        tint = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                    Text(
-                        text = stringResource(R.string.time_label),
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                }
-
+                Text(
+                    text = stringResource(R.string.time_label),
+                    style = MaterialTheme.typography.titleMedium,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+                Spacer(modifier = Modifier.height(dimensionResource(R.dimen.spacing_medium)))
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.spacing_large))
@@ -326,7 +327,8 @@ fun ActivityFormContent(
                     Card(
                         modifier = Modifier
                             .weight(1f)
-                            .clickable { showStartTimePicker.value = true },
+                            .clickable { showStartTimePicker.value = true }
+                            .testTag("start_time_field"),
                         colors = CardDefaults.cardColors(
                             containerColor = MaterialTheme.colorScheme.surfaceVariant
                         ),
@@ -355,10 +357,11 @@ fun ActivityFormContent(
                     Card(
                         modifier = Modifier
                             .weight(1f)
-                            .clickable { showEndTimePicker.value = true },
-                         colors = CardDefaults.cardColors(
-                             containerColor = MaterialTheme.colorScheme.surfaceVariant
-                         ),
+                            .clickable { showEndTimePicker.value = true }
+                            .testTag("end_time_field"),
+                        colors = CardDefaults.cardColors(
+                            containerColor = MaterialTheme.colorScheme.surfaceVariant
+                        ),
                         shape = RoundedCornerShape(dimensionResource(R.dimen.card_corner_radius))
                     ) {
                         Column(
@@ -387,7 +390,8 @@ fun ActivityFormContent(
         // --- Location Section ---
         OutlinedCard(
             modifier = Modifier
-                .fillMaxWidth(),
+                .fillMaxWidth()
+                .testTag("location_field"),
             border = BorderStroke(dimensionResource(R.dimen.card_border_thickness), MaterialTheme.colorScheme.outline),
             shape = RoundedCornerShape(dimensionResource(R.dimen.card_corner_radius))
         ) {

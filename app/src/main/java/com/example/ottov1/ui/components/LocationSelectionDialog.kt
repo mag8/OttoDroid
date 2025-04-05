@@ -1,9 +1,12 @@
 package com.example.ottov1.ui.components
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import com.example.ottov1.R
 
@@ -27,8 +30,20 @@ fun LocationSelectionDialog(
                 singleLine = true,
                 colors = OutlinedTextFieldDefaults.colors(
                     focusedBorderColor = MaterialTheme.colorScheme.primary,
-                    unfocusedBorderColor = MaterialTheme.colorScheme.outline
-                )
+                    unfocusedBorderColor = MaterialTheme.colorScheme.outline,
+                    focusedContainerColor = Color(0xFFE8F5E9),
+                    unfocusedContainerColor = Color(0xFFE8F5E9)
+                ),
+                trailingIcon = {
+                    IconButton(onClick = {
+                        // TODO: Implement location search functionality
+                    }) {
+                        Icon(
+                            imageVector = Icons.Default.Search,
+                            contentDescription = "Search location"
+                        )
+                    }
+                }
             )
         },
         confirmButton = {
