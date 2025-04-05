@@ -34,6 +34,7 @@ import com.example.ottov1.ui.theme.OttoListBackground
 import com.example.ottov1.ui.theme.OttoListBorder
 import com.example.ottov1.ui.theme.OttoListSubtleText
 import com.example.ottov1.ui.theme.OttoListTitle
+import com.example.ottov1.util.Constants
 import java.text.SimpleDateFormat
 import java.util.*
 import java.time.Instant
@@ -184,7 +185,7 @@ private fun ActivityItem(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = formatDateForList(activity.date),
+                    text = formatDate(activity.date),
                     style = MaterialTheme.typography.bodyMedium,
                     color = OttoListSubtleText
                 )
@@ -208,12 +209,9 @@ private fun ActivityItem(
     }
 }
 
-private fun formatDateForList(timestamp: Long): String {
-    return try {
-        val instant = Instant.ofEpochMilli(timestamp)
-        val localDateTime = LocalDateTime.ofInstant(instant, ZoneId.systemDefault())
-        DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM).format(localDateTime)
-    } catch (e: Exception) {
-        SimpleDateFormat("MMM d, yyyy", Locale.getDefault()).format(Date(timestamp))
-    }
+private fun formatDate(timestamp: Long): String {
+    val instant = Instant.ofEpochMilli(timestamp)
+    val localDateTime = LocalDateTime.ofInstant(instant, ZoneId.systemDefault())
+    return SimpleDateFormat(Constants.DATE_FORMAT_SHORT, Locale.getDefault())
+        .format(Date(timestamp))
 } 

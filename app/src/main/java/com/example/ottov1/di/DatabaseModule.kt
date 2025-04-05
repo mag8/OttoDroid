@@ -6,14 +6,13 @@ import com.example.ottov1.data.local.ActivityDao
 import com.example.ottov1.data.local.AppDatabase
 import com.example.ottov1.data.repository.ActivityRepository
 import com.example.ottov1.data.repository.ActivityRepositoryImpl
+import com.example.ottov1.util.Constants
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
-
-private const val DATABASE_NAME = "otto_database"
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -26,10 +25,8 @@ object DatabaseModule {
         return Room.databaseBuilder(
             context,
             AppDatabase::class.java,
-            DATABASE_NAME
-        )
-        .fallbackToDestructiveMigration()
-        .build()
+            Constants.DATABASE_NAME
+        ).build()
     }
 
     @Provides

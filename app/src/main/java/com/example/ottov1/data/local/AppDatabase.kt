@@ -2,14 +2,19 @@ package com.example.ottov1.data.local
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
+import com.example.ottov1.data.local.dao.ActivityDao
+import com.example.ottov1.data.local.entity.ActivityEntity
+import com.example.ottov1.util.Constants
 
 @Database(
     entities = [ActivityEntity::class],
-    version = 10,
+    version = Constants.DATABASE_VERSION,
     exportSchema = false
 )
+@TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun activityDao(): ActivityDao
 
@@ -31,10 +36,11 @@ abstract class AppDatabase : RoomDatabase() {
         }
 
         // Migration from 6 to 7: Add any new columns or changes
-        val MIGRATION_6_7: Migration = object : Migration(6, 7) {
+        val MIGRATION_6_7 = object : Migration(6, 7) {
             override fun migrate(database: SupportSQLiteDatabase) {
-                // If no schema changes, this can be empty
-                // Just needed for version bump
+                // Add columns with NOT NULL and DEFAULT value to handle existing rows
+                database.execSQL("ALTER TABLE activities ADD COLUMN minPeople INTEGER NOT NULL DEFAULT ${Constants.DEFAULT_MIN_PEOPLE}")
+                database.execSQL("ALTER TABLE activities ADD COLUMN maxPeople INTEGER NOT NULL DEFAULT ${Constants.DEFAULT_MAX_PEOPLE}")
             }
         }
 
